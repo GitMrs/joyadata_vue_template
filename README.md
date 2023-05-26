@@ -128,8 +128,8 @@ window._baseData = {
 ## 公司 nrm 配置
 
 1. npm i -g nrm@1.1.0
-2. nrm add joyadata_in http://192.168.90.126:8081/repository/joyadata-npm-group 【内网】
-3. nrm add joyadata http://47.92.77.150:8081/repository/joyadata-npm-group 【外网】
+2. nrm add joyadata_in http://192.168.90.126:8081/repository/joyadata-npm-group/ 【内网】
+3. nrm add joyadata http://47.92.77.150:8081/repository/joyadata-npm-group/ 【外网】
 4. nrm use joyadata【根据自己的实际情况使用，外网地址或者内网地址】
 5. 进入项目，下载依赖
 6. 常见问题
