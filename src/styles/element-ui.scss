@@ -1,0 +1,127 @@
+// cover some element-ui styles
+
+.el-breadcrumb__inner,
+.el-breadcrumb__inner a {
+  font-weight: 400 !important;
+}
+
+.el-upload {
+  input[type='file'] {
+    display: none !important;
+  }
+}
+
+.el-upload__input {
+  display: none;
+}
+
+// to fixed https://github.com/ElemeFE/element/issues/2461
+.el-dialog {
+  transform: none;
+  left: 0;
+  position: relative;
+  margin: 0 auto;
+}
+
+// refine element ui upload
+.upload-container {
+  .el-upload {
+    width: 100%;
+
+    .el-upload-dragger {
+      width: 100%;
+      height: 200px;
+    }
+  }
+}
+
+// dropdown
+.el-dropdown-menu {
+  a {
+    display: block;
+  }
+}
+
+// to fix el-date-picker css style
+.el-range-separator {
+  box-sizing: content-box;
+}
+
+// vue-treeselect
+.vue-treeselect__control {
+  height: 28px;
+
+  .vue-treeselect__placeholder,
+  .vue-treeselect__single-value {
+    line-height: 29px;
+  }
+}
+
+.vue-treeselect--disabled .vue-treeselect__single-value {
+  color: #dddddd;
+}
+
+// el-collapse-item disabled
+.el-collapse-item.is-disabled .el-collapse-item__header {
+  color: #303133;
+  cursor: not-allowed;
+}
+
+// el-tree
+.asides .mytree.isdisabled * {
+  cursor: not-allowed;
+  // pointer-events: none;
+}
+
+.asides .mytree.isdisabled .el-tree-node {
+  pointer-events: none;
+}
+
+.main_container .el-table__body-wrapper {
+  // height: 100% !important;
+}
+
+.el_container {
+  -webkit-box-orient: horizontal;
+  flex-direction: row;
+  flex: 1;
+  flex-basis: auto;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 0 20px;
+  overflow: auto;
+}
+
+$purple: #8250df;
+$purple_bg: #fbe9ff;
+
+.el-button--purple.is-plain {
+  color: $purple;
+  background: $purple_bg;
+  border-color: $purple;
+}
+
+.el-button--purple.is-plain:hover,
+.el-button--purple.is-plain:focus {
+  background: $purple;
+  border-color: $purple;
+  color: #fff;
+}
+
+.el-button--purple.is-plain:active {
+  background: $purple;
+  border-color: $purple;
+  color: #fff;
+  outline: none;
+}
+.el-form-item__label {
+  font-weight: normal;
+  color: #666;
+}
+.el-icon-errorTo:before {
+  color: red;
+  content: '\E7A3';
+}
+.gutter {
+  background-color: #f0f0f0;
+}
