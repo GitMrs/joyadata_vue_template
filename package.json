@@ -16,9 +16,9 @@
   },
   "dependencies": {
     "@riophae/vue-treeselect": "0.4.0",
-    "axios": "0.18.1",
-    "echarts": "4.7.0",
-    "element-ui": "2.13.0",
+    "axios": "1.4.0",
+    "echarts": "5.4.2",
+    "element-ui": "2.15.13",
     "joyadata-coms": "0.0.6",
     "joyadata-header": "0.0.6",
     "jquery": "3.5.0",

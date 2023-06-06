@@ -17,7 +17,7 @@ module.exports = {
   /**
    * 初始化页面，发布生效
    */
-  initPageURL: '/dsg/page/home/',
+  initPageURL: '/dedp/page/home/',
   /**
    * 所属项目名称
    */
