@@ -25,24 +25,31 @@
         sort-by="lastModificationTime_desc"
       />
     </div>
+    <add-dom ref="dialogRef" :title="title" />
   </div>
 </template>
 
 <script>
 import setting from '@/settings';
-import { manage } from './config';
+import { manage, dialogStatus } from './config';
 import { mapGetters } from 'vuex';
+import addDom from './coms/add.vue';
+import { demoURL } from '@/api/demo';
 export default {
+  components: {
+    addDom,
+  },
   data() {
     return {
       setting,
       navVal: [],
-      fileUrl: '',
+      fileUrl: demoURL.demo,
       parmas: manage.parmas(this),
       searchOperation: manage.searchOperation(this),
       column: manage.table(this),
       title: '',
       model: '',
+      dialogStatus,
       categoryType: '',
     };
   },
@@ -70,11 +77,11 @@ export default {
     },
   },
   mounted() {
-    this.getTree();
+    // this.getTree();
   },
   methods: {
     getTree() {
-      this.$request._get('xxx').then(res => {
+      this.$request._get(demoURL.demo).then(res => {
         this.navVal = res.result;
         this.$nextTick(() => {
           const { id } = this.$route.query;
@@ -85,12 +92,25 @@ export default {
       });
     },
     add() {
-      this.title = '新增分类';
-      this.model = 'add';
-      this.$refs['addClass'].open();
+      this.title = dialogStatus[0];
+      this.$refs['dialogRef'].open();
     },
-    close() {
-      this.$refs['table_dom'].init();
+    edit(row) {
+      this.title = dialogStatus[1];
+      this.$refs['dialogRef'].open(row);
+    },
+    look(row) {
+      this.title = dialogStatus[2];
+      this.$refs['dialogRef'].open(row);
+    },
+    async delete(row) {
+      try {
+        await this.$request._delete(`${demoURL.demo}/${row.id}`);
+        this.$message.success('成功');
+        this.$refs['table_dom'].init();
+      } catch (error) {
+        console.log(error);
+      }
     },
     selectable() {
       return true;

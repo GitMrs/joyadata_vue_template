@@ -7,5 +7,5 @@ const fileType = {
   txt: require('@/assets/norm/txt.png'),
   file: require('@/assets/norm/file.png'),
 };
-
-export { manage, fileType };
+const dialogStatus = ['新增', '编辑', '详情'];
+export { manage, fileType, dialogStatus };

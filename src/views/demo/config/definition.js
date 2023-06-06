@@ -94,13 +94,10 @@ export const manage = {
               // return row.projectNum > 0 ? 'info' : 'danger';
               return 'danger';
             },
-            disabled: row => {
-              return row.projectNum > 0;
-            },
             plain: true,
             permission: row => {
               // console.log(row.children === undefined);
-              return row.projectNum !== 0;
+              return row.projectNum > 0;
             },
             handle: row => {
               vue.delete(row);
@@ -203,7 +200,7 @@ export const manage = {
     ];
   },
   // 新增
-  addMain: vue => {
+  formMain: vue => {
     return [
       {
         type: 'selectTree',
@@ -251,7 +248,7 @@ export const manage = {
       },
     ];
   },
-  addRules: vue => {
+  formRules: vue => {
     // const isType = (rule, value, callback) => {
     //   const isName = /^[a-zA-Z\u4e00-\u9fa5]{0,}$/;
     //   if (isName.test(value) === false) {
