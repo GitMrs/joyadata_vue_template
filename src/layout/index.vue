@@ -82,7 +82,10 @@ export default {
   methods: {
     getMenu() {
       this.$request
-        ._get(user.getMenu + '/' + this.$route.path.split('/')[1])
+        ._get(user.getMenu, {
+          menuCode: this.$route.path.split('/')[1],
+          productCode: 'tenant',
+        })
         .then(res => {
           const result = res.result || [];
           const menu = [];

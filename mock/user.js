@@ -648,13 +648,12 @@ export default [
     },
   },
   {
-    url: `${prefix}/cms/user/dirs/eq/menuCode`,
+    url: `${prefix}/cms/user/dirs`,
     type: 'get',
-    response: _ => {
-      const urls = _.url.split('/');
-      const code = urls[urls.length - 1];
+    response: config => {
+      const { menuCode, productCode } = config.query;
       const result = users['joyadata'].page.menus.filter(
-        item => item.code === code,
+        item => item.code === menuCode && item.productCode === productCode,
       )[0].dirs;
       return {
         code: 0,
