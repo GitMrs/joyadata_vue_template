@@ -8,19 +8,35 @@ import NotFont from '@/layout/404';
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
- *
- * hidden: true                   if set true, item will not show in the sidebar(default is false)
- * alwaysShow: true               if set true, will always show the root menu
- *                                if not set alwaysShow, when item has more than one children route,
- *                                it will becomes nested mode, otherwise not show the root menu
- * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
- * name:'router-name'             the name is used by <keep-alive> (must set!!!)
- * meta : {
-    roles: ['admin','editor']    control the page roles (you can set multiple roles)
-    title: 'title'               the name show in sidebar and breadcrumb (recommend set)
-    icon: 'svg-name'             the icon show in the sidebar
-    breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
-    activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
+ * 菜单类型 - dirs 无数据，不需要左边的目录，菜单就是目录
+ {
+   path: '/dataImport',
+    component: Layout,
+    redirect: '/dataImport/index',
+    meta: { title: '测试页面', code: 'dataImport' },
+    children: [
+      {
+        path: 'home', // 此处必须为home，
+        name: 'home',
+        meta: { title: '测试页面', code: 'class', noSider: true }, // noSider: 为true
+        component: () => import('@/views/demo'),
+      },
+    ],
+  }
+  * 菜单类型 - dirs 有数据，需要左边目录
+  {
+    path: '/dataImport',
+    component: Layout,
+    redirect: '/dataImport/home',
+    meta: { title: '测试页面', code: 'dataImport' },
+    children: [
+      {
+        path: 'home', // path 要和dirs 里面的code保持一致
+        name: 'home',
+        meta: { title: '测试页面', code: 'class' }, // 不需要noSider
+        component: () => import('@/views/demo'),
+      },
+    ],
   }
  */
 // 动态批对菜单使用
