@@ -83,6 +83,16 @@ window._baseData = {
 };
 ```
 
+- vue.config.js
+
+```js
+...
+module.exports = {
+  publicPath: '/dedp/page/project', // 这里需要改为项目需要的名字
+  ...
+}
+```
+
 ## 后台接口说明
 
 1.  http://192.168.80.180:9200/jddsi/v1/cms/approval_categorys

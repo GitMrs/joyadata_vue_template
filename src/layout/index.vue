@@ -20,7 +20,6 @@
       :logo="logo"
       :sys-name="sysName"
       :menu-data="mockData"
-      project-url="/dsg/page/api/"
     >
     </joyadata-dsg-header>
     <el-container>
