@@ -66,7 +66,6 @@ export const manage = {
         width: '150px',
         prop: 'lastModificationTime',
         tooltip: true,
-        align: 'left',
       },
       {
         name: '操作',
