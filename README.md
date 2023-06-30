@@ -41,7 +41,7 @@
 
 # 说明
 
-- src/setting.js
+- 修改 src/setting.js project
 
 ```js
 module.exports = {
@@ -70,7 +70,7 @@ module.exports = {
 };
 ```
 
-- public/static/base.js
+- 修改 public/static/base.js name 大平台不用修改
 
 ```js
 window._baseData = {
@@ -83,7 +83,7 @@ window._baseData = {
 };
 ```
 
-- vue.config.js
+- 修改 vue.config.js publicPath 对应自己的项目
 
 ```js
 ...
@@ -124,6 +124,7 @@ module.exports = {
           setinkeys=x1,x2 查询指定范围,多个以逗号隔开,对应的参数也要多个 x1=1&x2=2，后台的分割类型默认,
           lazys 级联查询 layzs=xx,返回的列表里就会带xx对象
           cascades 级联保存 cascades=x1,x2；保存对象里面存在{x1:[],x2},可以保存成功！
+          withs 关联出来字段 withs=userTotal 查出列表的userTotal字段
     树形结构 查询结果必须是一个树结构
         /tree 普通查询
         /tree/fulltree 全树 -- 一般搜索用
