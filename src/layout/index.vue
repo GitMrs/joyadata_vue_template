@@ -83,7 +83,7 @@ export default {
       this.$request
         ._get(user.getMenu, {
           menuCode: this.$route.path.split('/')[1],
-          productCode: 'tenant',
+          productCode: settings.project,
         })
         .then(res => {
           const result = res.result || [];
