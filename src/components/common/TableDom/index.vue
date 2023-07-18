@@ -44,13 +44,20 @@
       :header-cell-class-name="select || radio ? cellClass : ''"
       :row-class-name="tableRowClassName"
       :default-sort="defaultSort"
-      @sort-change="handleSort"
       @select="selectChange"
       @selection-change="handleSelectionChange"
       @select-all="handleSelectAll"
       @filter-change="filterChange"
       @expand-change="expandChange"
+      @sort-change="handleSort"
       @row-click="rowClick"
+      @cell-click="cellClick"
+      @row-dblclick="rowDblclick"
+      @cell-dblclick="cellDblclick"
+      @row-contextmenu="rowContextmenu"
+      @header-contextmenu="headerContextmenu"
+      @cell-mouse-enter="cellMouseEnter"
+      @cell-mouse-leave="cellMouseLeave"
     >
       <template v-if="useColumn === 'useColumn'">
         <el-table-column
@@ -71,88 +78,104 @@
           :width="column.length > 0 ? 55 : 'auto'"
         ></el-table-column>
         <template v-for="(item, index) in columnData">
-          <!-- 可以触发点击事件 -->
-          <el-table-column
-            v-if="item.handle"
-            :key="index"
-            :index="index"
-            :label="item.name"
-            :prop="item.prop"
-            :width="item.width"
-            v-bind="item.attrs || {}"
-            :sortable="item.sortable ? 'custom' : false"
-            :show-overflow-tooltip="
-              typeof item.tooltip === 'boolean'
-                ? item.tooltip
-                : item.tooltip || true
-            "
-            :align="item.align || 'center'"
-          >
-            <template slot-scope="scope">
-              <a
-                v-if="item.class"
-                :class="item.class && item.class(scope.row)"
-                @click="item.handle(scope.row)"
-              >
-                {{ scope | formateItem(item) }}
-              </a>
-              <a v-else style="color: #409eff" @click="item.handle(scope.row)">
-                {{ scope | formateItem(item) }}
-              </a>
-            </template>
-          </el-table-column>
-          <!-- 状态 icon -->
-          <el-table-column
-            v-else-if="item.type === 'statusIcon'"
-            :key="index"
-            :index="index"
-            :label="item.name"
-            :width="item.width"
-            v-bind="item.attrs || {}"
-            :show-overflow-tooltip="
-              typeof item.tooltip === 'boolean'
-                ? item.tooltip
-                : item.tooltip || true
-            "
-            :sortable="item.sortable ? 'custom' : false"
-            :align="item.align || 'center'"
-          >
-            <template slot-scope="scope">
-              <i
-                :class="`${item.statusProps[scope.row[item.prop]]} statusIcon`"
-                :style="`color:${item.statusColors[scope.row[item.prop]]}`"
-              >
-              </i>
-            </template>
-          </el-table-column>
-          <!-- switch选择 -->
-          <el-table-column
-            v-else-if="item.type === 'switch'"
-            :key="index"
-            :index="index"
-            :label="item.name"
-            :width="item.width"
-            v-bind="item.attrs || {}"
-            :sortable="item.sortable ? 'custom' : false"
-            :show-overflow-tooltip="
-              typeof item.tooltip === 'boolean'
-                ? item.tooltip
-                : item.tooltip || true
-            "
-            :align="item.align || 'center'"
-          >
-            <template slot-scope="scope">
-              <el-switch
-                :disabled="item.disabled && item.disabled(scope.row)"
-                :value="scope.row[item.prop]"
-                :active-value="item.activeValue || '0'"
-                :inactive-value="item.inactiveValue || '1'"
-                :active-color="item.activeColor || '#409eff'"
-                :inactive-color="item.inactiveColor || '#dcdfe6'"
-                @change="item.change(scope.row)"
-              >
-              </el-switch>
-              <!-- <el-switch
+          <template v-if="!item.hidden">
+            <!-- 自定义序号位置 -->
+            <el-table-column
+              v-if="item.type === 'sortIndex'"
+              :key="index"
+              :type="item.index || 'index'"
+              :label="item.label || '序号'"
+              :align="item.align || 'center'"
+              :fixed="item.sort"
+            ></el-table-column>
+            <!-- 可以触发点击事件 -->
+            <el-table-column
+              v-if="item.handle"
+              :key="index"
+              :index="index"
+              :label="item.name"
+              :prop="item.prop"
+              :width="item.width"
+              v-bind="item.attrs || {}"
+              :sortable="item.sortable ? 'custom' : false"
+              :show-overflow-tooltip="
+                typeof item.tooltip === 'boolean'
+                  ? item.tooltip
+                  : item.tooltip || true
+              "
+              :align="item.align || 'left'"
+            >
+              <template slot-scope="scope">
+                <a
+                  v-if="item.class"
+                  :class="item.class && item.class(scope.row)"
+                  @click="item.handle(scope.row)"
+                >
+                  {{ scope | formateItem(item, defaultValue) }}
+                </a>
+                <a
+                  v-else
+                  style="color: #409eff"
+                  @click="item.handle(scope.row)"
+                >
+                  {{ scope | formateItem(item, defaultValue) }}
+                </a>
+              </template>
+            </el-table-column>
+            <!-- 状态 icon -->
+            <el-table-column
+              v-else-if="item.type === 'statusIcon'"
+              :key="index"
+              :index="index"
+              :label="item.name"
+              :width="item.width"
+              v-bind="item.attrs || {}"
+              :show-overflow-tooltip="
+                typeof item.tooltip === 'boolean'
+                  ? item.tooltip
+                  : item.tooltip || true
+              "
+              :sortable="item.sortable ? 'custom' : false"
+              :align="item.align || 'center'"
+            >
+              <template slot-scope="scope">
+                <i
+                  :class="
+                    `${item.statusProps[scope.row[item.prop]]} statusIcon`
+                  "
+                  :style="`color:${item.statusColors[scope.row[item.prop]]}`"
+                >
+                </i>
+              </template>
+            </el-table-column>
+            <!-- switch选择 -->
+            <el-table-column
+              v-else-if="item.type === 'switch'"
+              :key="index"
+              :index="index"
+              :label="item.name"
+              :width="item.width"
+              v-bind="item.attrs || {}"
+              :sortable="item.sortable ? 'custom' : false"
+              :show-overflow-tooltip="
+                typeof item.tooltip === 'boolean'
+                  ? item.tooltip
+                  : item.tooltip || true
+              "
+              :align="item.align || 'center'"
+            >
+              <template slot-scope="scope">
+                <el-switch
+                  :disabled="item.disabled && item.disabled(scope.row)"
+                  :value="scope.row[item.prop]"
+                  :active-value="item.activeValue || '0'"
+                  :inactive-value="item.inactiveValue || '1'"
+                  :active-color="item.activeColor || '#409eff'"
+                  :inactive-color="item.inactiveColor || '#dcdfe6'"
+                  @change="item.change(scope.row)"
+                >
+                </el-switch>
+                <!-- <el-switch
                 v-else
                 :disabled="item.disable"
                 v-model="scope.row[item.prop]"
@@ -162,317 +185,34 @@
                 :inactive-color="item.inactiveColor || '#dcdfe6'"
               >
               </el-switch> -->
-            </template>
-          </el-table-column>
-          <!-- 操作 -->
-          <el-table-column
-            v-else-if="item.name === '操作'"
-            :key="index"
-            :index="index"
-            :label="item.name"
-            :prop="item.prop"
-            :align="item.align || 'center'"
-            :sortable="item.sortable ? 'custom' : false"
-            :fixed="item.fixed"
-            v-bind="item.attrs || {}"
-            :width="
-              item.width ||
-                (item.group.length === 1 ? '60' : item.group.length * 40)
-            "
-          >
-            <template slot-scope="scope">
-              <!-- dropdown 存在的情况 -->
-              <template v-if="item.dropdown">
-                <!-- 默认不被dropdown的按钮 -->
-                <template
-                  v-for="(_item, _index) in item.group.slice(
-                    0,
-                    item.dropdownNum || 4,
-                  )"
-                >
-                  <el-button
-                    v-if="_item.type === 'file'"
-                    :key="_index"
-                    size="mini"
-                    :type="(_item.type && _item.type(scope.row)) || 'text'"
-                    :plain="_item.plain"
-                    :title="
-                      _item.permission &&
-                        _item.permission(scope.row) &&
-                        '当前禁止操作'
-                    "
-                    :disabled="
-                      (_item.permission && _item.permission(scope.row)) || false
-                    "
-                  >
-                    <upload-dom
-                      :text="_item.name"
-                      :type="(_item.type && _item.type(scope.row)) || 'text'"
-                      :plain="_item.plain"
-                      @upLoadRequest="file => _item.handle(file, scope.row)"
-                    ></upload-dom>
-                  </el-button>
-                  <el-popover
-                    v-else-if="
-                      _item.name === '删除' && _item.type === 'popover'
-                    "
-                    :ref="scope.row[rowKey]"
-                    :key="_index"
-                    placement="top"
-                    width="200"
-                    style="margin-left: 10px"
-                  >
-                    <p>
-                      <i class="el-icon-warning" style="color: #e6a23c"></i>
-                      您确定要删除吗？
-                    </p>
-                    <div style="text-align: right; margin: 0">
-                      <el-button
-                        size="mini"
-                        class="popover_btn"
-                        @click="closePopover(scope.row)"
-                      >
-                        取 消
-                      </el-button>
-                      <el-button
-                        type="primary"
-                        size="mini"
-                        class="popover_btn"
-                        :loading="btn_loading"
-                        @click="_item.handle(scope.row, closePopover)"
-                      >
-                        确 定
-                      </el-button>
-                    </div>
-                    <el-button
-                      slot="reference"
-                      :title="
-                        _item.permission &&
-                          _item.permission(scope.row) &&
-                          '当前禁止操作'
-                      "
-                      :disabled="
-                        (_item.permission && _item.permission(scope.row)) ||
-                          false
-                      "
-                      size="mini"
-                      :type="
-                        _item.type === 'popover' && _item.plain
-                          ? 'danger'
-                          : 'text'
-                      "
-                      :plain="_item.plain"
-                    >
-                      删除
-                    </el-button>
-                  </el-popover>
-                  <el-button
-                    v-else-if="
-                      (_item.renderBtn && _item.renderBtn(scope.row)) ||
-                        !_item.renderBtn
-                    "
-                    :key="_index"
-                    size="mini"
-                    :type="(_item.type && _item.type(scope.row)) || 'text'"
-                    :plain="_item.plain"
-                    :title="
-                      _item.permission &&
-                        _item.permission(scope.row) &&
-                        '当前禁止操作'
-                    "
-                    :disabled="
-                      (_item.permission && _item.permission(scope.row)) || false
-                    "
-                    @click="_item.handle(scope.row)"
-                  >
-                    {{
-                      (_item.nameFn && _item.nameFn(scope.row)) || _item.name
-                    }}
-                  </el-button>
-                </template>
-                <!-- dropdown的按钮 -->
-                <template v-if="item.group.length > (item.dropdownNum || 4)">
-                  <el-dropdown>
-                    <el-button
-                      size="mini"
-                      :plain="item.dropdownPlain"
-                      :type="item.dropdownType || 'text'"
-                      style="margin-left: 10px"
-                    >
-                      更多菜单<i class="el-icon-arrow-down el-icon--right"></i>
-                    </el-button>
-                    <el-dropdown-menu slot="dropdown">
-                      <template
-                        v-for="(_item, _index) in item.group.slice(
-                          item.dropdownNum || 4,
-                          item.group.length,
-                        )"
-                      >
-                        <el-dropdown-item
-                          v-if="
-                            (_item.renderBtn && _item.renderBtn(scope.row)) ||
-                              !_item.renderBtn
-                          "
-                          :key="_index"
-                          :disabled="
-                            (_item.permission && _item.permission(scope.row)) ||
-                              false
-                          "
-                        >
-                          <div @click="_item.handle && _item.handle(scope.row)">
-                            {{ _item.name }}
-                          </div>
-                        </el-dropdown-item>
-                      </template>
-                    </el-dropdown-menu>
-                  </el-dropdown>
-                </template>
               </template>
-              <template v-else>
-                <template v-for="(_item, _index) in item.group">
-                  <!-- icon -->
-                  <template v-if="_item.icon">
-                    <el-button
-                      v-if="
-                        (_item.renderBtn && _item.renderBtn(scope.row)) ||
-                          !_item.renderBtn
-                      "
-                      :key="_index"
-                      class="table_btn_icon"
-                      size="mini"
-                      type="text"
-                      :style="
-                        _item.type === 'popover'
-                          ? { marginLeft: 0 }
-                          : { marginLeft: '10px' }
-                      "
-                      :title="
-                        _item.permission &&
-                          _item.permission(scope.row) &&
-                          !_item.tooltipAttr &&
-                          '当前禁止操作'
-                      "
-                      :disabled="
-                        (_item.permission && _item.permission(scope.row)) ||
-                          false
-                      "
-                      :loading="!!scope.row['loading_' + _index]"
-                      @click="
-                        _item.type === 'popover' || _item.handle(scope.row)
-                      "
-                    >
-                      <template v-if="_item.type === 'popover'">
-                        <el-popover
-                          :ref="scope.row[rowKey]"
-                          :key="_index"
-                          placement="top"
-                          width="200"
-                          style="margin-left: 10px"
-                        >
-                          <p>
-                            <i
-                              class="el-icon-warning"
-                              style="color: #e6a23c"
-                            ></i>
-                            您确定要删除吗？
-                          </p>
-                          <div style="text-align: right; margin: 0">
-                            <el-button
-                              size="mini"
-                              class="popover_btn"
-                              @click="closePopover(scope.row)"
-                            >
-                              取 消
-                            </el-button>
-                            <el-button
-                              type="primary"
-                              size="mini"
-                              class="popover_btn"
-                              :loading="btn_loading"
-                              @click="_item.handle(scope.row, closePopover)"
-                            >
-                              确 定
-                            </el-button>
-                          </div>
-                          <el-button
-                            slot="reference"
-                            style="margin-left: 0"
-                            :title="
-                              _item.permission &&
-                                _item.permission(scope.row) &&
-                                '当前禁止操作'
-                            "
-                            :disabled="
-                              (_item.permission &&
-                                _item.permission(scope.row)) ||
-                                false
-                            "
-                            size="mini"
-                            type="text"
-                          >
-                            <svg-icon
-                              v-if="_item.iconType === 'svg'"
-                              class="icon iconfont"
-                              :class="_item.icon"
-                              :icon-class="_item.icon"
-                            ></svg-icon>
-                            <i
-                              v-else
-                              class="icon iconfont"
-                              :class="_item.icon"
-                            ></i>
-                          </el-button>
-                        </el-popover>
-                      </template>
-                      <template v-else>
-                        <el-tooltip
-                          placement="top-start"
-                          :disabled="!_item.tooltipAttr"
-                          :content="
-                            (_item.tooltipMessage &&
-                              _item.tooltipMessage(scope.row)) ||
-                              _item.name
-                          "
-                          v-bind="_item.tooltipAttr"
-                        >
-                          <template v-if="_item.tooltipAttr">
-                            <svg-icon
-                              v-if="_item.iconType === 'svg'"
-                              class="icon iconfont"
-                              :class="_item.icon"
-                              :icon-class="_item.icon"
-                            ></svg-icon>
-                            <i
-                              v-else
-                              class="icon iconfont"
-                              :class="_item.icon"
-                            ></i>
-                          </template>
-                          <template v-else>
-                            <i
-                              v-if="_item.iconType === 'svg'"
-                              :title="_item.name"
-                            >
-                              <svg-icon
-                                class="icon iconfont"
-                                :class="_item.icon"
-                                :icon-class="_item.icon"
-                              ></svg-icon>
-                            </i>
-                            <i
-                              v-else
-                              class="icon iconfont"
-                              :title="_item.name"
-                              :class="_item.icon"
-                            ></i>
-                          </template>
-                        </el-tooltip>
-                      </template>
-                    </el-button>
-                  </template>
-                  <!-- button -->
-                  <template v-else>
-                    <!-- 文件上传 -->
+            </el-table-column>
+            <!-- 操作 -->
+            <el-table-column
+              v-else-if="item.name === '操作'"
+              :key="index"
+              :index="index"
+              :label="item.name"
+              :prop="item.prop"
+              :align="item.align || 'center'"
+              :sortable="item.sortable ? 'custom' : false"
+              :fixed="item.fixed"
+              v-bind="item.attrs || {}"
+              :width="
+                item.width ||
+                  (item.group.length === 1 ? '60' : item.group.length * 40)
+              "
+            >
+              <template slot-scope="scope">
+                <!-- dropdown 存在的情况 -->
+                <template v-if="item.dropdown">
+                  <!-- 默认不被dropdown的按钮 -->
+                  <template
+                    v-for="(_item, _index) in item.group.slice(
+                      0,
+                      item.dropdownNum || 4,
+                    )"
+                  >
                     <el-button
                       v-if="_item.type === 'file'"
                       :key="_index"
@@ -496,7 +236,6 @@
                         @upLoadRequest="file => _item.handle(file, scope.row)"
                       ></upload-dom>
                     </el-button>
-                    <!-- popover框 删除 -->
                     <el-popover
                       v-else-if="
                         _item.name === '删除' && _item.type === 'popover'
@@ -551,7 +290,6 @@
                         删除
                       </el-button>
                     </el-popover>
-                    <!-- 外部通过renderBtn控制按钮是否存在 -->
                     <el-button
                       v-else-if="
                         (_item.renderBtn && _item.renderBtn(scope.row)) ||
@@ -570,7 +308,6 @@
                         (_item.permission && _item.permission(scope.row)) ||
                           false
                       "
-                      :loading="!!scope.row['loading_' + _index]"
                       @click="_item.handle(scope.row)"
                     >
                       {{
@@ -578,29 +315,324 @@
                       }}
                     </el-button>
                   </template>
+                  <!-- dropdown的按钮 -->
+                  <template v-if="item.group.length > (item.dropdownNum || 4)">
+                    <el-dropdown>
+                      <el-button
+                        size="mini"
+                        :plain="item.dropdownPlain || 'plain'"
+                        :type="item.dropdownType || 'success'"
+                        style="margin-left: 10px"
+                      >
+                        {{ item.dropdownText || '更多'
+                        }}<i class="el-icon-arrow-down el-icon--right"></i>
+                      </el-button>
+                      <el-dropdown-menu slot="dropdown">
+                        <template
+                          v-for="(_item, _index) in item.group.slice(
+                            item.dropdownNum || 4,
+                            item.group.length,
+                          )"
+                        >
+                          <el-dropdown-item
+                            v-if="
+                              (_item.renderBtn && _item.renderBtn(scope.row)) ||
+                                !_item.renderBtn
+                            "
+                            :key="_index"
+                            :disabled="
+                              (_item.permission &&
+                                _item.permission(scope.row)) ||
+                                false
+                            "
+                          >
+                            <div
+                              @click="_item.handle && _item.handle(scope.row)"
+                            >
+                              {{ _item.name }}
+                            </div>
+                          </el-dropdown-item>
+                        </template>
+                      </el-dropdown-menu>
+                    </el-dropdown>
+                  </template>
+                </template>
+                <template v-else>
+                  <template v-for="(_item, _index) in item.group">
+                    <!-- icon -->
+                    <template v-if="_item.icon">
+                      <el-button
+                        v-if="
+                          (_item.renderBtn && _item.renderBtn(scope.row)) ||
+                            !_item.renderBtn
+                        "
+                        :key="_index"
+                        class="table_btn_icon"
+                        size="mini"
+                        type="text"
+                        :style="
+                          _item.type === 'popover'
+                            ? { marginLeft: 0 }
+                            : { marginLeft: '10px' }
+                        "
+                        :title="
+                          _item.permission &&
+                            _item.permission(scope.row) &&
+                            !_item.tooltipAttr &&
+                            '当前禁止操作'
+                        "
+                        :disabled="
+                          (_item.permission && _item.permission(scope.row)) ||
+                            false
+                        "
+                        :loading="!!scope.row['loading_' + _index]"
+                        @click="
+                          _item.type === 'popover' || _item.handle(scope.row)
+                        "
+                      >
+                        <template v-if="_item.type === 'popover'">
+                          <el-popover
+                            :ref="scope.row[rowKey]"
+                            :key="_index"
+                            placement="top"
+                            width="200"
+                            style="margin-left: 10px"
+                          >
+                            <p>
+                              <i
+                                class="el-icon-warning"
+                                style="color: #e6a23c"
+                              ></i>
+                              您确定要删除吗？
+                            </p>
+                            <div style="text-align: right; margin: 0">
+                              <el-button
+                                size="mini"
+                                class="popover_btn"
+                                @click="closePopover(scope.row)"
+                              >
+                                取 消
+                              </el-button>
+                              <el-button
+                                type="primary"
+                                size="mini"
+                                class="popover_btn"
+                                :loading="btn_loading"
+                                @click="_item.handle(scope.row, closePopover)"
+                              >
+                                确 定
+                              </el-button>
+                            </div>
+                            <el-button
+                              slot="reference"
+                              style="margin-left: 0"
+                              :title="
+                                _item.permission &&
+                                  _item.permission(scope.row) &&
+                                  '当前禁止操作'
+                              "
+                              :disabled="
+                                (_item.permission &&
+                                  _item.permission(scope.row)) ||
+                                  false
+                              "
+                              size="mini"
+                              type="text"
+                            >
+                              <svg-icon
+                                v-if="_item.iconType === 'svg'"
+                                class="icon iconfont"
+                                :class="_item.icon"
+                                :icon-class="_item.icon"
+                              ></svg-icon>
+                              <i
+                                v-else
+                                class="icon iconfont"
+                                :class="_item.icon"
+                              ></i>
+                            </el-button>
+                          </el-popover>
+                        </template>
+                        <template v-else>
+                          <el-tooltip
+                            placement="top-start"
+                            :disabled="!_item.tooltipAttr"
+                            :content="
+                              (_item.tooltipMessage &&
+                                _item.tooltipMessage(scope.row)) ||
+                                _item.name
+                            "
+                            v-bind="_item.tooltipAttr"
+                          >
+                            <template v-if="_item.tooltipAttr">
+                              <svg-icon
+                                v-if="_item.iconType === 'svg'"
+                                class="icon iconfont"
+                                :class="_item.icon"
+                                :icon-class="_item.icon"
+                              ></svg-icon>
+                              <i
+                                v-else
+                                class="icon iconfont"
+                                :class="_item.icon"
+                              ></i>
+                            </template>
+                            <template v-else>
+                              <i
+                                v-if="_item.iconType === 'svg'"
+                                :title="_item.name"
+                              >
+                                <svg-icon
+                                  class="icon iconfont"
+                                  :class="_item.icon"
+                                  :icon-class="_item.icon"
+                                ></svg-icon>
+                              </i>
+                              <i
+                                v-else
+                                class="icon iconfont"
+                                :title="_item.name"
+                                :class="_item.icon"
+                              ></i>
+                            </template>
+                          </el-tooltip>
+                        </template>
+                      </el-button>
+                    </template>
+                    <!-- button -->
+                    <template v-else>
+                      <!-- 文件上传 -->
+                      <el-button
+                        v-if="_item.type === 'file'"
+                        :key="_index"
+                        size="mini"
+                        :type="(_item.type && _item.type(scope.row)) || 'text'"
+                        :plain="_item.plain"
+                        :title="
+                          _item.permission &&
+                            _item.permission(scope.row) &&
+                            '当前禁止操作'
+                        "
+                        :disabled="
+                          (_item.permission && _item.permission(scope.row)) ||
+                            false
+                        "
+                      >
+                        <upload-dom
+                          :text="_item.name"
+                          :type="
+                            (_item.type && _item.type(scope.row)) || 'text'
+                          "
+                          :plain="_item.plain"
+                          @upLoadRequest="file => _item.handle(file, scope.row)"
+                        ></upload-dom>
+                      </el-button>
+                      <!-- popover框 删除 -->
+                      <el-popover
+                        v-else-if="
+                          _item.name === '删除' && _item.type === 'popover'
+                        "
+                        :ref="scope.row[rowKey]"
+                        :key="_index"
+                        placement="top"
+                        width="200"
+                        style="margin-left: 10px"
+                      >
+                        <p>
+                          <i class="el-icon-warning" style="color: #e6a23c"></i>
+                          您确定要删除吗？
+                        </p>
+                        <div style="text-align: right; margin: 0">
+                          <el-button
+                            size="mini"
+                            class="popover_btn"
+                            @click="closePopover(scope.row)"
+                          >
+                            取 消
+                          </el-button>
+                          <el-button
+                            type="primary"
+                            size="mini"
+                            class="popover_btn"
+                            :loading="btn_loading"
+                            @click="_item.handle(scope.row, closePopover)"
+                          >
+                            确 定
+                          </el-button>
+                        </div>
+                        <el-button
+                          slot="reference"
+                          :title="
+                            _item.permission &&
+                              _item.permission(scope.row) &&
+                              '当前禁止操作'
+                          "
+                          :disabled="
+                            (_item.permission && _item.permission(scope.row)) ||
+                              false
+                          "
+                          size="mini"
+                          :type="
+                            _item.type === 'popover' && _item.plain
+                              ? 'danger'
+                              : 'text'
+                          "
+                          :plain="_item.plain"
+                        >
+                          删除
+                        </el-button>
+                      </el-popover>
+                      <!-- 外部通过renderBtn控制按钮是否存在 -->
+                      <el-button
+                        v-else-if="
+                          (_item.renderBtn && _item.renderBtn(scope.row)) ||
+                            !_item.renderBtn
+                        "
+                        :key="_index"
+                        size="mini"
+                        :type="(_item.type && _item.type(scope.row)) || 'text'"
+                        :plain="_item.plain"
+                        :title="
+                          _item.permission &&
+                            _item.permission(scope.row) &&
+                            '当前禁止操作'
+                        "
+                        :disabled="
+                          (_item.permission && _item.permission(scope.row)) ||
+                            false
+                        "
+                        :loading="!!scope.row['loading_' + _index]"
+                        @click="_item.handle(scope.row)"
+                      >
+                        {{
+                          (_item.nameFn && _item.nameFn(scope.row)) ||
+                            _item.name
+                        }}
+                      </el-button>
+                    </template>
+                  </template>
                 </template>
               </template>
-            </template>
-          </el-table-column>
-          <!-- 自定义 -->
-          <el-table-column
-            v-else-if="item.type === 'slot'"
-            :key="index"
-            :index="index"
-            :label="item.name"
-            :prop="item.prop"
-            :width="item.width"
-            v-bind="item.attrs || {}"
-            :sortable="item.sortable ? 'custom' : false"
-            :show-overflow-tooltip="
-              typeof item.tooltip === 'boolean'
-                ? item.tooltip
-                : item.tooltip || true
-            "
-            :align="item.align || 'center'"
-          >
-            <!-- 自定义header 内部提示 -->
-            <!--
+            </el-table-column>
+            <!-- 自定义 -->
+            <el-table-column
+              v-else-if="item.type === 'slot'"
+              :key="index"
+              :index="index"
+              :label="item.name"
+              :prop="item.prop"
+              :width="item.width"
+              v-bind="item.attrs || {}"
+              :sortable="item.sortable ? 'custom' : false"
+              :show-overflow-tooltip="
+                typeof item.tooltip === 'boolean'
+                  ? item.tooltip
+                  : item.tooltip || true
+              "
+              :align="item.align || 'center'"
+            >
+              <!-- 自定义header 内部提示 -->
+              <!--
               <a slot="xxx_header" slot-scope="props">
                编码
               <i
@@ -610,16 +642,16 @@
               ></i>
               </a>
             -->
-            <template v-if="item.slot_header" slot="header">
-              <slot :name="`${item.prop}_header`" :scope="item">
-                <a>
-                  {{ item.name }}
-                  <joyadataTips :tooltip="true" :item="item.labelTip" />
-                </a>
-              </slot>
-            </template>
-            <template slot-scope="scope">
-              <!--
+              <template v-if="item.slot_header" slot="header">
+                <slot :name="`${item.prop}_header`" :scope="item">
+                  <a>
+                    {{ item.name }}
+                    <joyadataTips :tooltip="true" :item="item.labelTip" />
+                  </a>
+                </slot>
+              </template>
+              <template slot-scope="scope">
+                <!--
               render: (h) => {
                 return  h('i', 'message', {
                   props: {
@@ -628,63 +660,65 @@
                 })
               }
              -->
-              <ex-slot
-                v-if="item.render"
-                :render="item.render"
-                :column="item"
-                :row="scope.row"
-                :index="scope.$index"
-              />
-              <!--
+                <ex-slot
+                  v-if="item.render"
+                  :render="item.render"
+                  :column="item"
+                  :row="scope.row"
+                  :index="scope.$index"
+                />
+                <!--
                 <template slot="siteRef" slot-scope="{ scope }">
                   <el-input size="mini" v-model="scope.row.site"></el-input>
                 </template>
                -->
-              <slot
-                v-else-if="item.slot_name"
-                :name="item.slot_name"
-                :scope="scope"
-              ></slot>
-              <div
-                v-else
-                style="display: inline"
-                :class="item.class && item.class(scope.row)"
-              >
-                {{ scope | formateItem(item) }}
-              </div>
-            </template>
-            <!-- 自定义内容 -->
-            <!-- <template v-else slot-scope="scope">
+                <slot
+                  v-else-if="item.slot_name"
+                  :name="item.slot_name"
+                  :scope="scope"
+                ></slot>
+                <div
+                  v-else
+                  style="display: inline"
+                  :class="item.class && item.class(scope.row)"
+                >
+                  {{ scope | formateItem(item, defaultValue) }}
+                </div>
+              </template>
+              <!-- 自定义内容 -->
+
+              <!-- <template v-else slot-scope="scope">
+
             </template> -->
-          </el-table-column>
-          <!-- type:time 默认调用filter处理时间 -->
-          <el-table-column
-            v-else-if="item.type === 'time'"
-            :key="index"
-            :index="index"
-            :label="item.name"
-            :prop="item.prop"
-            :width="item.width || '150px'"
-            v-bind="item.attrs || {}"
-            :show-overflow-tooltip="
-              typeof item.tooltip === 'boolean'
-                ? item.tooltip
-                : item.tooltip || true
-            "
-            :sortable="item.sortable ? 'custom' : false"
-            :align="item.align || 'center'"
-          >
-            <template slot-scope="scope">
-              <div
-                style="display: inline"
-                :class="item.class && item.class(scope.row)"
-              >
-                {{ scope.row[item.prop] | filterTime }}
-              </div>
-            </template>
-          </el-table-column>
-          <!-- 扩展性的 -->
-          <!-- table 嵌套表格
+            </el-table-column>
+            <!-- type:time 默认调用filter处理时间 -->
+            <el-table-column
+              v-else-if="item.type === 'time'"
+              :key="index"
+              :index="index"
+              :label="item.name"
+              :prop="item.prop"
+              :width="item.width || '150px'"
+              v-bind="item.attrs || {}"
+              :show-overflow-tooltip="
+                typeof item.tooltip === 'boolean'
+                  ? item.tooltip
+                  : item.tooltip || true
+              "
+              :sortable="item.sortable ? 'custom' : false"
+              :align="item.align || 'center'"
+            >
+              <template slot-scope="scope">
+                <div
+                  style="display: inline"
+                  :class="item.class && item.class(scope.row)"
+                >
+                  {{ scope.row[item.prop] | filterTime }}
+                </div>
+              </template>
+            </el-table-column>
+            <!-- 扩展性的 -->
+            <!-- table 嵌套表格
             <template slot="expand_expand" slot-scope="scope">
               <div class="table_in_wrap">
                 <joyadata-table
@@ -703,46 +737,47 @@
               </div>
              </template>
            -->
-          <el-table-column
-            v-else-if="item.type === 'expand'"
-            :key="index"
-            :index="index"
-            type="expand"
-          >
-            <template slot-scope="props">
-              <slot :name="`${item.prop}_expand`" :scope="props.row"></slot>
-              <!--  -->
-            </template>
-          </el-table-column>
-          <!-- 普通的column -->
-          <el-table-column
-            v-else
-            :key="index"
-            :index="index"
-            :label="item.name"
-            :prop="item.prop"
-            :width="item.width"
-            :show-overflow-tooltip="
-              typeof item.tooltip === 'boolean'
-                ? item.tooltip
-                : item.tooltip || true
-            "
-            :align="item.align || 'center'"
-            :sortable="item.sortable ? 'custom' : false"
-            v-bind="item.attrs || {}"
-            :filtered-value="
-              (item.filteredValue && item.filteredValue(item)) || []
-            "
-          >
-            <template slot-scope="scope">
-              <div
-                style="display: inline"
-                :class="item.class && item.class(scope.row)"
-              >
-                {{ scope | formateItem(item) }}
-              </div>
-            </template>
-          </el-table-column>
+            <el-table-column
+              v-else-if="item.type === 'expand'"
+              :key="index"
+              :index="index"
+              type="expand"
+            >
+              <template slot-scope="props">
+                <slot :name="`${item.prop}_expand`" :scope="props.row"></slot>
+                <!--  -->
+              </template>
+            </el-table-column>
+            <!-- 普通的column -->
+            <el-table-column
+              v-else-if="!item.hidden"
+              :key="index"
+              :index="index"
+              :label="item.name"
+              :prop="item.prop"
+              :width="item.width"
+              :show-overflow-tooltip="
+                typeof item.tooltip === 'boolean'
+                  ? item.tooltip
+                  : item.tooltip || true
+              "
+              :align="item.align || 'left'"
+              :sortable="item.sortable ? 'custom' : false"
+              v-bind="item.attrs || {}"
+              :filtered-value="
+                (item.filteredValue && item.filteredValue(item)) || []
+              "
+            >
+              <template slot-scope="scope">
+                <div
+                  style="display: inline"
+                  :class="item.class && item.class(scope.row)"
+                >
+                  {{ scope | formateItem(item, defaultValue) }}
+                </div>
+              </template>
+            </el-table-column>
+          </template>
         </template>
       </template>
       <template v-else>
@@ -806,7 +841,7 @@
 </template>
 
 <script>
-import initData from '@/lib/joyadata_coms/src/lib/initData';
+import initData from 'joyadata-coms/src/lib/initData';
 import {
   parseTime,
   isObject,
@@ -831,16 +866,16 @@ export default {
       if (!val) return '-';
       return parseTime(val);
     },
-    formateItem(scope, item) {
+    formateItem(scope, item, defaultValue) {
       const val = scope.row;
       if (isObject(val[item.prop])) {
         return item.formate
           ? item.formate(val, item, scope)
-          : formateTable(val[item.prop][item.inKey]);
+          : formateTable(val[item.prop][item.inKey], defaultValue);
       } else {
         return item.formate
           ? item.formate(val, item, scope)
-          : formateTable(val[item.prop]);
+          : formateTable(val[item.prop], defaultValue);
       }
     },
     currenPage(val) {
@@ -966,7 +1001,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    // checkBox
+    // checkBox 是否禁用，true不禁用，false 禁用！
     selectable: {
       type: Function,
       default: () => {
@@ -987,6 +1022,11 @@ export default {
     initPage: {
       type: Number,
       default: 0,
+    },
+    // 默认default-value
+    defaultValue: {
+      type: String,
+      default: '-',
     },
     /**
      * 默认排序
@@ -1139,6 +1179,15 @@ export default {
         // this.initURL();
         debounceFn();
       }
+      // if (pager) {
+      //   // this.$set(this.column[1], 'filteredValue', [...name.split(',')]);
+      // } else {
+      //   this.column = [];
+      //   this.column = await this.formateDictColumn(
+      //     menuConfig.column(this, system),
+      //     'Menu',
+      //   );
+      // }
     },
     url(val) {
       if (this.type !== 'page') {
@@ -1158,7 +1207,6 @@ export default {
       this.formateColumn();
     },
   },
-
   beforeCreate() {
     /**
      * 默认选中排序
@@ -1174,7 +1222,6 @@ export default {
       };
     }
   },
-
   mounted() {
     /**
      * 处理column
@@ -1201,10 +1248,10 @@ export default {
       this.init();
     }
   },
-
   destroyed() {
     window.sessionStorage.setItem(columnSession, '');
   },
+
   methods: {
     formateColumn() {
       let column = [];
@@ -1400,6 +1447,7 @@ export default {
     rowClick(row, column, event) {
       this.$emit('rowClick', { row, column, event });
     },
+    // 列点击
     cellClick(row, column, cell, event) {
       this.$emit('cellClick', { row, column, cell, event });
     },
