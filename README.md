@@ -66,11 +66,11 @@ module.exports = {
   /**
    * 所属项目名称
    */
-  project: 'tenant',
+  project: 'tenant', // 修改这里
 };
 ```
 
-- 修改 public/static/base.js name 大平台不用修改
+- 修改 public/static/base.js name 平台不用修改
 
 ```js
 window._baseData = {
