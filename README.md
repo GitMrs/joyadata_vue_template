@@ -95,6 +95,10 @@ module.exports = {
 }
 ```
 
+- 按照添加的菜单，完善/src/router/index.js 里面的路由配置
+
+- 按照原型编写views 里面的对应的页面
+
 ## 后台接口说明
 
 1.  http://192.168.80.180:9200/jddsi/v1/cms/approval_categorys
