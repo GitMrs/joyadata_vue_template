@@ -68,7 +68,7 @@ module.exports = {
   /**
    * 所属项目名称
    */
-  project: 'tenant', // 修改这里
+  project: 'tenant', // 修改这里 模块productCode
 };
 ```
 
