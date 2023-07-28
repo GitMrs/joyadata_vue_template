@@ -1,8 +1,10 @@
 # joyadata-templalte
 
 - 配合 joyadata-cli 使用
-  1. svn clone https://39.104.28.91/svn/joyadata/cloud/joyadata-web-comm/joyadata_template
-- 修改 npm 源，建议使用 nrm 公司默认源 http://39.97.108.41:8081/repository/joyadata-group-npm/
+
+1. 安装joyadata-cli
+2. joyadata-cli create project
+3. 根据说明，修改项目和下载依赖
 
 # 项目目录
 
