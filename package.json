@@ -19,6 +19,10 @@
     "axios": "1.4.0",
     "echarts": "5.4.2",
     "element-ui": "2.15.13",
+    "vuex": "3.1.0",
+    "vue": "2.6.10",
+    "vue-cron": "1.0.9",
+    "vue-router": "3.0.6",
     "joyadata-coms": "0.0.6",
     "joyadata-header": "0.0.6",
     "jquery": "3.5.0",
@@ -28,10 +32,6 @@
     "nprogress": "0.2.0",
     "path-to-regexp": "2.4.0",
     "resize-observer-polyfill": "1.5.1",
-    "vue": "2.6.10",
-    "vue-cron": "1.0.9",
-    "vue-router": "3.0.6",
-    "vuex": "3.1.0",
     "webpack-merge": "5.7.3"
   },
   "devDependencies": {
