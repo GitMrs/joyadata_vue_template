@@ -1,7 +1,6 @@
+import { userGetter } from 'joyadata-header/src/store/modules/user';
 const getter = {
-  user: state => state.user.user,
-  menu: state => state.user.menu,
-  fold: state => state.user.fold,
+  ...userGetter,
   visitedViews: state => state.tagsView.visitedViews,
   cachedViews: state => state.tagsView.cachedViews,
   treeData: state => state.treeList.treeData, // 左侧数菜单

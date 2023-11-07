@@ -92,27 +92,8 @@
   overflow: auto;
 }
 
-$purple: #8250df;
-$purple_bg: #fbe9ff;
-
-.el-button--purple.is-plain {
-  color: $purple;
-  background: $purple_bg;
-  border-color: $purple;
-}
-
-.el-button--purple.is-plain:hover,
-.el-button--purple.is-plain:focus {
-  background: $purple;
-  border-color: $purple;
-  color: #fff;
-}
-
-.el-button--purple.is-plain:active {
-  background: $purple;
-  border-color: $purple;
-  color: #fff;
-  outline: none;
+.aside_tree .aside .el-tree {
+  height: calc(100vh - 246px);
 }
 .el-form-item__label {
   font-weight: normal;

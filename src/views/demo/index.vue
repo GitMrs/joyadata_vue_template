@@ -119,16 +119,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-::v-deep .aside_tree {
-  .aside .el-tree {
-    height: calc(100vh - 225px);
-  }
-}
-.el_container {
-  min-width: 930px;
-
-  // .top_search  {
-  // }
-}
-</style>
+<style lang="scss" scoped></style>
