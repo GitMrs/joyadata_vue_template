@@ -6667,13 +6667,13 @@ jest@^23.6.0:
 
 joyadata-coms@0.0.13:
   version "0.0.13"
-  resolved "http://192.168.90.126:8081/repository/joyadata-npm-group/joyadata-coms/-/joyadata-coms-0.0.13.tgz#f851482e76287a16330e42ecaaec3cf0c55c3f93"
-  integrity sha512-6DxwG+Ghjlc67GB/+7NqmDOnE2qlzwTmTRsK0W9zYBaK9Vxr7Fgls3JzUqqMlV+HvEKJF3PR9oMpnMpiG1DOaw==
+  resolved "http://192.168.90.126:8081/repository/joyadata-npm-group/joyadata-coms/-/joyadata-coms-0.0.13.tgz#94ad49c2f154be2a3b0ac22202aba7462aaf8525"
+  integrity sha512-4+UY8zgSI57R/3MPr7URZh7FNdg2hKvu/Upf7+BH4p8Kqmr2/vfa5skhrvrjrL5Hlo1as0bB4Y7d59aceOXiwA==
 
 joyadata-header@0.0.13:
   version "0.0.13"
-  resolved "http://192.168.90.126:8081/repository/joyadata-npm-group/joyadata-header/-/joyadata-header-0.0.13.tgz#da45c6cf18dff2963566dc3edf1e259a0ed26178"
-  integrity sha512-AARYmntX5w3C6eza/8ayrS5yudIVs2nC0iLs5Dp1e9BIq1jLmWhQE8g8SK9KmDfiUTErjHrIzVYvFa6/SFhZpg==
+  resolved "http://192.168.90.126:8081/repository/joyadata-npm-group/joyadata-header/-/joyadata-header-0.0.13.tgz#178ab60626d0fe860b436709e63c82f942bba76e"
+  integrity sha512-Un0PDCK6Kk6PG5Aj9AptP5fxkWgy4QUKy2M6UByzgmkacNv5ehTvIIYsbhCTlm0Od3F50lHj3TaUE9B9CTircA==
 
 jquery@3.5.0:
   version "3.5.0"

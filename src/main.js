@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import 'normalize.css/normalize.css'; // A modern alternative to CSS resets
 import ElementUI from 'element-ui';
-import './styles/theme/element-variables.scss';
 import echarts from 'echarts';
 Vue.prototype.$echarts = echarts;
 import joyadata_coms from 'joyadata-coms';
