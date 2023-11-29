@@ -69,7 +69,6 @@ export const manage = {
       },
       {
         name: '操作',
-        width: '180px',
         group: [
           {
             name: '编辑',

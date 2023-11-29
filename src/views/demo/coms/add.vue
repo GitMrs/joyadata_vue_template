@@ -9,7 +9,7 @@
       <joyadata-form
         ref="formDom"
         :main="main"
-        label-width="130px"
+        :label-width="`${$settings.labelWidth}px`"
         :rules="rules"
         :disable="title === dialogStatus[2]"
       ></joyadata-form>

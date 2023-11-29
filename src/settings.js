@@ -1,9 +1,10 @@
 module.exports = {
-
   /**
    * table calc
    */
-  tableHeight: 'calc(100vh - 280px )',
+  tableHeight: 'calc(100vh - 307px )', // 全局的tableheight
+  fixedNum: 60, // table 操作的补充数值
+  labelWidth: 90, // form labelWidth 全局数值
   /**
    * 项目类型需要
    */

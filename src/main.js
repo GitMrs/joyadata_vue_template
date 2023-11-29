@@ -11,11 +11,12 @@ import App from './App';
 import store from './store/index';
 import router from './router/index';
 import '@/icons'; // icon
+import settings from './settings';
 Vue.use(ElementUI);
 Vue.use(joyadata_coms);
 Vue.use(joyadata_header);
 Vue.config.productionTip = false;
-
+Vue.prototype.$settings = settings;
 new Vue({
   el: '#app',
   router,
