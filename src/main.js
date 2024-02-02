@@ -12,6 +12,10 @@ import store from './store/index';
 import router from './router/index';
 import '@/icons'; // icon
 import settings from './settings';
+import VueDND from 'awe-dnd';
+Vue.use(VueDND);
+import layoutAside from '@/components/layout/layoutAside';
+Vue.component('layoutAside', layoutAside);
 Vue.use(ElementUI);
 Vue.use(joyadata_coms);
 Vue.use(joyadata_header);

@@ -1,7 +1,9 @@
 'use strict';
 const path = require('path');
 const defaultSettings = require('./src/settings.js');
-
+const {
+  iconWebpackConfig,
+} = require('joyadata-header/src/utils/webpackConfig');
 function resolve(dir) {
   return path.join(__dirname, dir);
 }
@@ -53,21 +55,11 @@ module.exports = {
     config.plugins.delete('prefetch'); // TODO: need test
 
     // set svg-sprite-loader
-    config.module
-      .rule('svg')
-      .exclude.add(resolve('src/icons'))
-      .end();
-    config.module
-      .rule('icons')
-      .test(/\.svg$/)
-      .include.add(resolve('src/icons'))
-      .end()
-      .use('svg-sprite-loader')
-      .loader('svg-sprite-loader')
-      .options({
-        symbolId: 'icon-[name]',
-      })
-      .end();
+    iconWebpackConfig(config, resolve('src/icons'));
+    iconWebpackConfig(
+      config,
+      resolve('node_modules/joyadata-header/src/icons'),
+    );
 
     // set preserveWhitespace
     config.module

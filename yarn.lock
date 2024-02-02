@@ -1974,6 +1974,11 @@ available-typed-arrays@^1.0.5:
   resolved "http://192.168.90.126:8081/repository/joyadata-npm-group/available-typed-arrays/-/available-typed-arrays-1.0.5.tgz#92f95616501069d07d10edb2fc37d3e1c65123b7"
   integrity sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==
 
+awe-dnd@^0.3.4:
+  version "0.3.4"
+  resolved "http://192.168.90.126:8081/repository/joyadata-npm-group/awe-dnd/-/awe-dnd-0.3.4.tgz#5913d12e0bd32f3e7e4f6361a870e8ea623496eb"
+  integrity sha512-ZvwlnaUn1RFwYXQUxLZKtyKH2R+z+8an1B0cTVfDA6UP7i2JxDnxXNwecR56qhwQha39XDQDpgmqz9kQghhksQ==
+
 aws-sign2@~0.7.0:
   version "0.7.0"
   resolved "http://192.168.90.126:8081/repository/joyadata-npm-group/aws-sign2/-/aws-sign2-0.7.0.tgz#b46e890934a9591f2d2f6f86d7e6a9f1b3fe76a8"
@@ -6665,16 +6670,6 @@ jest@^23.6.0:
     import-local "^1.0.0"
     jest-cli "^23.6.0"
 
-joyadata-coms@0.0.14:
-  version "0.0.14"
-  resolved "http://192.168.90.126:8081/repository/joyadata-npm-group/joyadata-coms/-/joyadata-coms-0.0.14.tgz#fe081d3556271afc00472c4d730df35c5c122380"
-  integrity sha512-ojEBFCiyVuOjtZ0AklPY6aM2Ikqb1AxBt0rSdBK7v6DJ7lnrc8towI3xyTMWxeTKOaoqfbNxrhyZdWIn2+oe2w==
-
-joyadata-header@0.0.14:
-  version "0.0.14"
-  resolved "http://192.168.90.126:8081/repository/joyadata-npm-group/joyadata-header/-/joyadata-header-0.0.14.tgz#52128f36e1802ff98e83cc53fcf3e15c62dd5e6a"
-  integrity sha512-K4PINVYVz686O4srBgKkOAX7W8zP9uAiyJHXhDc8acw22ZIz4czIsnwGcpb7fomU7JxaQBSca3sazmIqd5QIDQ==
-
 jquery@3.5.0:
   version "3.5.0"
   resolved "http://192.168.90.126:8081/repository/joyadata-npm-group/jquery/-/jquery-3.5.0.tgz#9980b97d9e4194611c36530e7dc46a58d7340fc9"
@@ -9837,6 +9832,11 @@ sort-keys@^2.0.0:
   integrity sha512-/dPCrG1s3ePpWm6yBbxZq5Be1dXGLyLn9Z791chDC3NFrpkVbWGzkBwPN1knaciexFXgRJ7hzdnwZ4stHSDmjg==
   dependencies:
     is-plain-obj "^1.0.0"
+
+sortablejs@^1.15.2:
+  version "1.15.2"
+  resolved "http://192.168.90.126:8081/repository/joyadata-npm-group/sortablejs/-/sortablejs-1.15.2.tgz#4e9f7bda4718bd1838add9f1866ec77169149809"
+  integrity sha512-FJF5jgdfvoKn1MAKSdGs33bIqLi3LmsgVTliuX6iITj834F+JRQZN90Z93yql8h0K2t0RwDPBmxwlbZfDcxNZA==
 
 source-list-map@^2.0.0:
   version "2.0.1"

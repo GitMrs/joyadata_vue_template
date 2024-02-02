@@ -1,36 +1,40 @@
 <template>
-  <div class="main_container_aside">
-    <el-aside class="aside_tree">
-      <joyadata-aside
-        ref="treeAside"
-        :nav-val="navVal"
-        :expand="false"
-      ></joyadata-aside>
-    </el-aside>
-    <div class="el_container">
-      <joyadata-search
-        :operation="searchOperation"
-        :parmas="parmas"
-        search-by="name,abbreviation"
-      />
-      <joyadata-table
-        ref="table_dom"
-        :selection="false"
-        :select="false"
-        :url="fileUrl"
-        :column="column"
-        :height="setting.tableHeight"
-        :init-pager="setting.initPage"
-        :selectable="selectable"
-        sort-by="lastModificationTime_desc"
-      />
-    </div>
+  <div>
+    <layoutAside ref="layoutAside">
+      <template slot="aside">
+        <joyadata-aside
+          ref="treeAside"
+          :nav-val="navVal"
+          :expand="false"
+          :auto-resize="true"
+          @toggleAside="val => $refs['layoutAside'].change(!val)"
+        ></joyadata-aside>
+      </template>
+      <template slot="table">
+        <joyadata-search
+          :operation="searchOperation"
+          :parmas="parmas"
+          search-by="name,abbreviation"
+        />
+        <joyadata-table
+          ref="table_dom"
+          :selection="false"
+          :select="false"
+          :url="fileUrl"
+          :column="column"
+          :height="$settings.tableHeight"
+          :init-pager="$settings.initPage"
+          :filter-column="true"
+          :selectable="selectable"
+          sort-by="lastModificationTime_desc"
+        />
+      </template>
+    </layoutAside>
     <add-dom ref="dialogRef" :title="title" />
   </div>
 </template>
 
 <script>
-import setting from '@/settings';
 import { manage, dialogStatus } from './config';
 import { mapGetters } from 'vuex';
 import addDom from './coms/add.vue';
@@ -41,7 +45,6 @@ export default {
   },
   data() {
     return {
-      setting,
       navVal: [],
       fileUrl: demoURL.demo,
       parmas: manage.parmas(this),

@@ -3,6 +3,43 @@
  */
 import Mock from 'mockjs';
 const prefix = '/dedp/v1';
+const result = {
+  tableKey: [
+    {
+      name: '分类名称',
+      prop: 'name',
+      tooltip: true,
+      align: 'left',
+    },
+    {
+      name: '分类简称',
+      prop: 'abbreviation',
+      tooltip: true,
+      align: 'left',
+    },
+    {
+      name: '关联项目数量',
+      prop: 'projectNum',
+      tooltip: true,
+      width: 150,
+      align: 'right',
+    },
+    {
+      name: '上级分类名称',
+      prop: 'parentName',
+      tooltip: true,
+      align: 'left',
+    },
+
+    {
+      name: '更新时间',
+      type: 'time',
+      width: '150px',
+      prop: 'lastModificationTime',
+      tooltip: true,
+    },
+  ],
+};
 // const data = Mock.mock({
 //   'items|10': [
 //     {
@@ -87,6 +124,52 @@ export default [
       return {
         code: 0,
         message: '成功',
+      };
+    },
+  },
+  {
+    url: `${prefix}/ui/tableData`,
+    type: 'get',
+    response: config => {
+      const { tableKey } = config.query;
+
+      return {
+        code: 0,
+        message: '成功',
+        result: {
+          data: result[tableKey],
+        },
+      };
+      // return {
+      //   code: 0,
+      //   message: '成功',
+      //   result: items,
+      // };
+    },
+  },
+  {
+    url: `${prefix}/ui/tableData`,
+    type: 'post',
+    response: config => {
+      const { data } = config.body;
+      const { tableKey } = config.query;
+      result[tableKey] = data;
+      return {
+        code: 0,
+        message: 'success',
+      };
+    },
+  },
+  {
+    url: `${prefix}/ui/tableData`,
+    type: 'put',
+    response: config => {
+      const { data } = config.body;
+      const { tableKey } = config.query;
+      result[tableKey] = data;
+      return {
+        code: 0,
+        message: 'success',
       };
     },
   },
