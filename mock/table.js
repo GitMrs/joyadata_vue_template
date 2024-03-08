@@ -173,4 +173,14 @@ export default [
       };
     },
   },
+  {
+    url: `${prefix}/ui/sys_info/name`,
+    type: 'get',
+    response: config => {
+      return {
+        code: 0,
+        result: '千帆平台',
+      };
+    },
+  },
 ];
