@@ -53,6 +53,12 @@ export const permissionRouter = [
         meta: { title: '测试页面', code: 'class' },
         component: () => import('@/views/demo'),
       },
+      {
+        path: 'home',
+        name: 'home',
+        meta: { title: '测试页面', code: 'class' },
+        component: () => import('@/views/home'),
+      },
     ],
   },
 ];

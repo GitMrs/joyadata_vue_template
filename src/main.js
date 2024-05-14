@@ -11,6 +11,7 @@ import App from './App';
 import store from './store/index';
 import router from './router/index';
 import '@/icons'; // icon
+import i18n from 'joyadata-header/src/i18n';
 import settings from './settings';
 import VueDND from 'awe-dnd';
 Vue.use(VueDND);
@@ -25,5 +26,12 @@ new Vue({
   el: '#app',
   router,
   store,
+  i18n,
   render: h => h(App),
 });
+
+// import startQiankun from './micros';
+
+// 启动微应用
+
+// startQiankun();

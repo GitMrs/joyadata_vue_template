@@ -473,14 +473,14 @@ const users = {
           dirs: [
             {
               code: 'class',
-              pos: 2,
+              pos: 1,
               name: '项目分类',
               menuId: '9517781749632',
               id: '9518663820288',
             },
             {
               code: 'home',
-              pos: 1,
+              pos: 2,
               name: '项目概况',
               menuId: '9517781749632',
               id: '9518661539968',
