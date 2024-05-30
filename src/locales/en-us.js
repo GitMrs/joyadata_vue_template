@@ -1,0 +1,31 @@
+export default {
+  definition: {
+    config: {
+      qingShuRuFenLei: 'Please enter category abbreviation',
+      qingShuRuFenLei2: 'Please enter category name',
+      beiZhuXinXi: 'Remark information',
+      beiZhu: 'Remark',
+      jianCheng: 'Abbreviation',
+      fenLeiJianCheng: 'Category abbreviation',
+      fenLeiMingCheng: 'Category name',
+      zhiChiSanCengMu:
+        'Supports three-level directory classification. If no parent category is selected, it defaults to a first-level category.',
+      shangJiFenLei: 'Parent category',
+      gengXinShiJian: 'Update time',
+      qingXuanZeGengXin: 'Please select update date',
+      souSuo: 'Search',
+      fenLeiMingChengFen: 'Category name, category abbreviation fuzzy search',
+      xinZeng: 'Add',
+      chuangJianShiJian: 'Creation time',
+      chuangJianRen: 'Creator',
+      xiangMuZhouQi: 'Project cycle',
+      xiangMuBiaoShi: 'Project identifier',
+      xiangMuMingCheng: 'Project name',
+      shanChu: 'Delete',
+      bianJi: 'Edit',
+      caoZuo: 'Action',
+      shangJiFenLeiMing: 'Parent category name',
+      guanLianXiangMuShu: 'Number of associated projects',
+    },
+  },
+};

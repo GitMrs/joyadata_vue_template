@@ -9,38 +9,39 @@
 //   }
 
 // };
+import I18N from 'joyadata-header/src/i18n';
 import { parseTime } from 'joyadata-coms/src/utils';
 export const manage = {
   // 列表
-  table: vue => {
+  table: (vue) => {
     return [
       {
-        name: '分类名称',
+        name: I18N.t('definition.config.fenLeiMingCheng'),
         prop: 'name',
         tooltip: true,
         align: 'left',
-        handle: row => {
+        handle: (row) => {
           vue.look(row);
         },
       },
       {
-        name: '分类简称',
+        name: I18N.t('definition.config.fenLeiJianCheng'),
         prop: 'abbreviation',
         tooltip: true,
         align: 'left',
       },
       {
-        name: '关联项目数量',
+        name: I18N.t('definition.config.guanLianXiangMuShu'),
         prop: 'projectNum',
         tooltip: true,
         width: 150,
         align: 'right',
-        handle: row => {
+        handle: (row) => {
           vue.project(row);
         },
       },
       {
-        name: '上级分类名称',
+        name: I18N.t('definition.config.shangJiFenLeiMing'),
         prop: 'parentName',
         tooltip: true,
         align: 'left',
@@ -61,25 +62,26 @@ export const manage = {
       //   align: 'left',
       // },
       {
-        name: '更新时间',
+        name: I18N.t('definition.config.gengXinShiJian'),
         type: 'time',
         width: '150px',
         prop: 'lastModificationTime',
         tooltip: true,
       },
       {
-        name: '操作',
+        name: I18N.t('definition.config.caoZuo'),
+        prop: 'Actions',
         group: [
           {
-            name: '编辑',
+            name: I18N.t('definition.config.bianJi'),
             type: () => {
               return 'primary';
             },
             plain: true,
-            permission: row => {
+            permission: (row) => {
               return false;
             },
-            handle: row => {
+            handle: (row) => {
               vue.edit(row);
             },
             // renderBtn: row => {
@@ -87,17 +89,17 @@ export const manage = {
             // },
           },
           {
-            name: '删除',
-            type: row => {
+            name: I18N.t('definition.config.shanChu'),
+            type: (row) => {
               // return row.projectNum > 0 ? 'info' : 'danger';
               return 'danger';
             },
             plain: true,
-            permission: row => {
+            permission: (row) => {
               // console.log(row.children === undefined);
               return row.projectNum > 0;
             },
-            handle: row => {
+            handle: (row) => {
               vue.delete(row);
             },
             // renderBtn: row => {
@@ -109,32 +111,32 @@ export const manage = {
     ];
   },
   // 分类关联项目数量
-  proTable: vue => {
+  proTable: (vue) => {
     return [
       {
-        name: '分类名称',
+        name: I18N.t('definition.config.fenLeiMingCheng'),
         prop: 'projectCatalogName',
         tooltip: true,
         align: 'left',
       },
       {
-        name: '项目名称',
+        name: I18N.t('definition.config.xiangMuMingCheng'),
         prop: 'name',
         tooltip: true,
         align: 'left',
       },
       {
-        name: '项目标识',
+        name: I18N.t('definition.config.xiangMuBiaoShi'),
         prop: 'code',
         tooltip: true,
         align: 'left',
       },
       {
-        name: '项目周期',
+        name: I18N.t('definition.config.xiangMuZhouQi'),
         prop: 'rangeTimes',
         tooltip: true,
         align: 'left',
-        formate: row => {
+        formate: (row) => {
           if (row.startDate) {
             return `${parseTime(row.startDate, '{y}-{m}-{d}')} ~ ${parseTime(
               row.endDate,
@@ -146,13 +148,13 @@ export const manage = {
         },
       },
       {
-        name: '创建人',
+        name: I18N.t('definition.config.chuangJianRen'),
         prop: 'createByName',
         tooltip: true,
         align: 'left',
       },
       {
-        name: '创建时间',
+        name: I18N.t('definition.config.chuangJianShiJian'),
         prop: 'createTime',
         type: 'time',
         tooltip: true,
@@ -161,10 +163,10 @@ export const manage = {
     ];
   },
   // 按钮
-  searchOperation: vue => {
+  searchOperation: (vue) => {
     return [
       {
-        name: '新增',
+        name: I18N.t('definition.config.xinZeng'),
         type: 'primary',
         icon: 'el-icon-plus',
         // disabledTitle: '根目录不可编目',
@@ -179,33 +181,33 @@ export const manage = {
     ];
   },
   // 筛选条件
-  parmas: vue => {
+  parmas: (vue) => {
     return [
       {
         type: 'input',
         prop: 'keywords',
-        placeholder: '分类名称，分类简称模糊搜索',
-        label: '搜索',
+        placeholder: I18N.t('definition.config.fenLeiMingChengFen'),
+        label: I18N.t('definition.config.souSuo'),
       },
       {
         type: 'frame',
         prop: 'lastModificationTime',
-        placeholder: '请选择更新日期',
-        label: '更新时间',
+        placeholder: I18N.t('definition.config.qingXuanZeGengXin'),
+        label: I18N.t('definition.config.gengXinShiJian'),
         format: 'yyyy-MM-dd',
         timeFormat: 'yyyy-MM-dd',
       },
     ];
   },
   // 新增
-  formMain: vue => {
+  formMain: (vue) => {
     return [
       {
         type: 'selectTree',
         vuex: 'none',
         props: 'pid',
-        placeholder: '上级分类',
-        label: '上级分类',
+        placeholder: I18N.t('definition.config.shangJiFenLei'),
+        label: I18N.t('definition.config.shangJiFenLei'),
         width: '100%',
         data: [],
         normalizer(node) {
@@ -217,36 +219,36 @@ export const manage = {
               node.children && node.children.length === 0 ? '' : node.children,
           };
         },
-        handle: row => {
+        handle: (row) => {
           vue.getPareDown(row);
         },
-        labelTips: '支持三层目录分类,不选上级分类默认为一级分类。',
+        labelTips: I18N.t('definition.config.zhiChiSanCengMu'),
         tooltip: true,
         tipsFn(item) {},
       },
       {
         type: 'input',
         props: 'name',
-        label: '分类名称',
-        placeholder: '分类名称',
+        label: I18N.t('definition.config.fenLeiMingCheng'),
+        placeholder: I18N.t('definition.config.fenLeiMingCheng'),
         width: '100%',
       },
       {
         type: 'input',
         props: 'abbreviation',
-        label: '分类简称',
-        placeholder: '简称',
+        label: I18N.t('definition.config.fenLeiJianCheng'),
+        placeholder: I18N.t('definition.config.jianCheng'),
         width: '100%',
       },
       {
         type: 'textarea',
         props: 'description',
-        label: '备注',
-        placeholder: '备注信息',
+        label: I18N.t('definition.config.beiZhu'),
+        placeholder: I18N.t('definition.config.beiZhuXinXi'),
       },
     ];
   },
-  formRules: vue => {
+  formRules: (vue) => {
     // const isType = (rule, value, callback) => {
     //   const isName = /^[a-zA-Z\u4e00-\u9fa5]{0,}$/;
     //   if (isName.test(value) === false) {
@@ -256,9 +258,19 @@ export const manage = {
     //   }
     // };
     return {
-      name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }],
+      name: [
+        {
+          required: true,
+          message: I18N.t('definition.config.qingShuRuFenLei2'),
+          trigger: 'blur',
+        },
+      ],
       abbreviation: [
-        { required: true, message: '请输入分类简称', trigger: 'blur' },
+        {
+          required: true,
+          message: I18N.t('definition.config.qingShuRuFenLei'),
+          trigger: 'blur',
+        },
       ],
     };
   },
