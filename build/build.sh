@@ -6,6 +6,7 @@ yarn build
 touch  ./dist/$(date +%s)
 cp -r ./dist ./demo
 tar -zcvf dist.tar.gz ./demo
-mv /home/frontend/dedp/web/demo/ /home/frontend/dedp/history/demo
-mv /home/frontend/dedp/history/demo/demo  /home/frontend/dedp/history/demo/demo$(date +%s)
+mkdir -p /home/frontend/dedp/history/demo/$(date +%Y)/$(date +%m)/
+mv /home/frontend/dedp/web/demo/ /home/frontend/dedp/history/demo/$(date +%Y)/$(date +%m)/
+mv /home/frontend/dedp/history/demo/$(date +%Y)/$(date +%m)/demo  /home/frontend/dedp/history/demo/$(date +%Y)/$(date +%m)/demo$(date +%s)
 mv ./demo /home/frontend/dedp/web
