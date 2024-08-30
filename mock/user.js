@@ -519,7 +519,7 @@ export default [
   {
     url: `${prefix}/cms/kaptcha`,
     type: 'get',
-    response: config => {
+    response: (config) => {
       return {
         code: 0,
         message: 'success',
@@ -535,7 +535,7 @@ export default [
   {
     url: `${prefix}/cms/user/login`,
     type: 'post',
-    response: config => {
+    response: (config) => {
       const { username } = config.body;
       const user = users[username];
       // mock error
@@ -558,7 +558,7 @@ export default [
   {
     url: `${prefix}/cms/user/logged`,
     type: 'get',
-    response: config => {
+    response: (config) => {
       // const { token } = config.query;
       // const info = users[token];
       // console.log('');
@@ -579,7 +579,7 @@ export default [
   {
     url: `${prefix}/auth/users/logged`,
     type: 'get',
-    response: config => {
+    response: (config) => {
       // const { token } = config.query;
       // const info = users[token];
       // console.log('');
@@ -601,7 +601,7 @@ export default [
   {
     url: `${prefix}/tms/products/index`,
     type: 'get',
-    response: _ => {
+    response: (_) => {
       return {
         code: 0,
         message: 'success',
@@ -974,7 +974,7 @@ export default [
   {
     url: `${prefix}/cms/user/logout`,
     type: 'post',
-    response: _ => {
+    response: (_) => {
       return {
         code: 0,
         message: 'success',
@@ -984,7 +984,7 @@ export default [
   {
     url: `${prefix}/cms/user/menus`,
     type: 'get',
-    response: _ => {
+    response: (_) => {
       return {
         code: 0,
         message: 'success',
@@ -1044,10 +1044,10 @@ export default [
   {
     url: `${prefix}/cms/user/dirs`,
     type: 'get',
-    response: config => {
+    response: (config) => {
       const { menuCode, productCode } = config.query;
       const result = users['joyadata'].page.menus.filter(
-        item => item.code === menuCode && item.productCode === productCode,
+        (item) => item.code === menuCode && item.productCode === productCode,
       )[0].dirs;
       return {
         code: 0,
@@ -1059,7 +1059,7 @@ export default [
   {
     url: `${prefix}/cms/threshold/eq/code/productCode`,
     type: 'get',
-    response: config => {
+    response: (config) => {
       return {
         code: 0,
         message: 'success',
@@ -1236,11 +1236,166 @@ export default [
   {
     url: `${prefix}/cms/threshold/eq/code/systemBase`,
     type: 'get',
-    response: config => {
+    response: (config) => {
       return {
         code: 0,
         message: 'success',
         result: [],
+      };
+    },
+  },
+  {
+    url: `${prefix}/pcs/myProductByUserId`,
+    type: 'get',
+    response: (config) => {
+      return {
+        code: 0,
+        message: 'success',
+        result: [
+          {
+            dbid: 15505,
+            tenantCode: 'dsg',
+            id: '9683684601600',
+            createTime: 1718091086000,
+            lastModificationTime: 1697608663000,
+            createBy: '-1',
+            createByName: '超级管理员',
+            isPublic: true,
+            pos: 2,
+            readonly: true,
+            code: 'metadata',
+            icon: 'OffLine',
+            unIcon: 'unOffLine',
+            enName: 'Metadata',
+            name: '元数据中心',
+            type: 'basic',
+            groupType: '基础支撑',
+            isGranted: true,
+            url: '/dedp/page/metadata',
+            isDefault: false,
+          },
+          {
+            dbid: 15488,
+            tenantCode: 'dsg',
+            id: '10060965015296',
+            createTime: 1718091102000,
+            lastModificationTime: 1711419308000,
+            createBy: '-1',
+            createByName: '超级管理员',
+            isPublic: true,
+            pos: 11,
+            readonly: true,
+            code: 'dataIndex',
+            icon: 'Target',
+            unIcon: 'unTarget',
+            enName: 'dataIndex',
+            name: '设计中心',
+            type: 'basic',
+            groupType: '设计中心',
+            hidden: false,
+            isGranted: true,
+            url: '/dedp/page/dataIndex',
+            description: '1',
+            isDefault: false,
+          },
+          {
+            dbid: 15499,
+            tenantCode: 'dsg',
+            id: '9526969516544',
+            createTime: 1718091115000,
+            lastModificationTime: 1697614541000,
+            createBy: '-1',
+            createByName: '超级管理员',
+            isPublic: true,
+            pos: 3,
+            readonly: true,
+            code: 'DataService',
+            icon: 'DataService',
+            unIcon: 'unDataService',
+            enName: 'DataService',
+            name: 'API工厂',
+            type: 'app',
+            groupType: '开发中心',
+            isGranted: true,
+            url: '/dedp/page/home/#/index/home/projectSummary',
+            description:
+              '接口生命周期管理能力，涵盖了接口生成、自动化测试、监控审计、微服务网关、API服务平台等应用场景。',
+            isDefault: false,
+          },
+          {
+            dbid: 15491,
+            tenantCode: 'dsg',
+            id: '11540593600000',
+            createTime: 1718091238000,
+            lastModificationTime: 1702518525000,
+            createBy: '-1',
+            createByName: '超级管理员',
+            isPublic: true,
+            pos: 10,
+            readonly: true,
+            code: 'api',
+            icon: 'DataService',
+            unIcon: 'unDataService',
+            enName: 'API Factory',
+            name: 'API工厂-新',
+            type: 'app',
+            groupType: '开发中心',
+            hidden: false,
+            isGranted: true,
+            url: '/dedp/page/home/#/index/home/projectSummary',
+            description: '1',
+            isDefault: false,
+          },
+          {
+            dbid: 15490,
+            tenantCode: 'dsg',
+            id: '11053212232192',
+            createTime: 1718092555000,
+            lastModificationTime: 1712126502000,
+            createBy: '-1',
+            createByName: '超级管理员',
+            isPublic: true,
+            pos: 2,
+            readonly: true,
+            code: 'integration',
+            icon: 'Target',
+            unIcon: 'unTarget',
+            enName: 'Data Integration',
+            name: '数据集成',
+            type: 'app',
+            groupType: '数据治理',
+            hidden: false,
+            isGranted: true,
+            url: '/dedp/page/home/#/index/home/projectSummary',
+            isDefault: false,
+          },
+        ],
+      };
+    },
+  },
+  {
+    url: `${prefix}/ui/sys_info/allowedMethods`,
+    type: 'get',
+    response: (config) => {
+      return {
+        code: 0,
+        message: 'success',
+        result: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH', 'OPTIONS', 'HEAD'],
+        took: 5,
+        cip: '192.168.100.58',
+      };
+    },
+  },
+  {
+    url: `${prefix}/ui/sys_info/encry`,
+    type: 'get',
+    response: (config) => {
+      return {
+        code: 0,
+        message: 'success',
+        result: true,
+        took: 5,
+        cip: '192.168.100.58',
       };
     },
   },
